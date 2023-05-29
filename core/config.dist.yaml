@@ -1,0 +1,11 @@
+regiondo:
+  debug: true
+  url: "https://api.regiondo.com/v1"
+  timeout: 30s
+  publicKey: ""
+  privateKey: ""
+server:
+  http:
+    addr: ":5000"
+  grpc:
+    addr: ":8000"

@@ -1,0 +1,19 @@
+version: "3"
+
+tasks:
+  run:
+    cmds:
+      - go run main.go
+  gen:
+    cmds:
+      - buf generate --config buf.yaml --template ./proto/buf.gen.yaml --path ./proto
+  tidy:
+    cmds:
+      - go mod tidy
+  test:
+    cmds:
+      - go test ./... -v -count=1 -cover -race
+  lint:
+    cmds:
+      - golint ./...
+      - golangci-lint run --out-format checkstyle

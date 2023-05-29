@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option go_package = "github.com/luckystrike561/vizimind/core/proto/v1";
+
+package proto.core.v1;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service CoreService {
+  rpc GetReservation(GetReservationRequest) returns (GetReservationResponse) {
+    option (google.api.http) = {
+      get : "/reservations/{reservation_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Get reservation"
+      description : "Returns the reservation"
+      tags : "reservation"
+    };
+  }
+
+  rpc CreateGPX(CreateGPXRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post : "/gpx"
+      body : "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Create gpx"
+      description : "Store gpx into database"
+      tags : "gpx"
+    };
+  }
+
+  rpc DownloadGPX(DownloadGPXRequest) returns (DownloadGPXResponse) {
+    option (google.api.http) = {
+      get : "/gpx/{sku}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Get gpx"
+      description : "Returns the gpx"
+      tags : "gpx"
+    };
+  }
+}
+
+message GetReservationRequest {
+  string reservation_id = 1;
+  string language = 2;
+}
+
+message GetReservationResponse {
+  string reservation = 1;
+  string product_id = 2;
+  string name = 3;
+  string sku = 4;
+  string short_description = 5;
+  string geo_lat = 6;
+  string geo_lon = 7;
+  string distance = 8;
+  string location_address = 9;
+  string city = 10;
+  string zipcode = 11;
+  string city_id = 12;
+  string region_id = 13;
+  string poi_ids = 14;
+  string country_id = 15;
+  string thumbnail = 16;
+  string image = 17;
+  string image_label = 18;
+  string rating_summary = 19;
+  string reviews_count = 20;
+  string Description = 21;
+}
+
+message CreateGPXRequest {
+  string sku = 1;
+  string gpx = 2;
+}
+
+message DownloadGPXRequest { string sku = 1; }
+
+message DownloadGPXResponse { string gpx = 1; }
