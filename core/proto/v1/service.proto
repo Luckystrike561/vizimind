@@ -9,14 +9,14 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 service CoreService {
-  rpc GetReservation(GetReservationRequest) returns (GetReservationResponse) {
+  rpc GetActivity(GetActivityRequest) returns (GetActivityResponse) {
     option (google.api.http) = {
-      get : "/reservations/{reservation_id}"
+      get : "/activity/{reservation_id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary : "Get reservation"
-      description : "Returns the reservation"
-      tags : "reservation"
+      summary : "Get activity"
+      description : "Returns the activity"
+      tags : "activity"
     };
   }
 
@@ -44,12 +44,12 @@ service CoreService {
   }
 }
 
-message GetReservationRequest {
+message GetActivityRequest {
   string reservation_id = 1;
   string language = 2;
 }
 
-message GetReservationResponse {
+message GetActivityResponse {
   string reservation = 1;
   string product_id = 2;
   string name = 3;
