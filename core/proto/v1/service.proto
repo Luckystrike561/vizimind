@@ -11,24 +11,12 @@ import "google/protobuf/empty.proto";
 service CoreService {
   rpc GetActivity(GetActivityRequest) returns (GetActivityResponse) {
     option (google.api.http) = {
-      get : "/activity/{reservation_id}"
+      get : "/activity/{order_id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary : "Get activity"
       description : "Returns the activity"
       tags : "activity"
-    };
-  }
-
-  rpc CreateGPX(CreateGPXRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      post : "/gpx"
-      body : "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary : "Create gpx"
-      description : "Store gpx into database"
-      tags : "gpx"
     };
   }
 
@@ -42,15 +30,21 @@ service CoreService {
       tags : "gpx"
     };
   }
+
+  rpc CreateGPX(CreateGPXRequest) returns (GPX);
+  rpc UpdateGPX(UpdateGPXRequest) returns (GPX);
+  rpc DeleteGPX(DeleteGPXRequest) returns (google.protobuf.Empty);
+  rpc ListGPX(ListGPXRequest) returns (ListGPXResponse);
+  rpc GetGPX(GetGPXRequest) returns (GPX);
 }
 
 message GetActivityRequest {
-  string reservation_id = 1;
+  string order_id = 1;
   string language = 2;
 }
 
 message GetActivityResponse {
-  string reservation = 1;
+  string order_id = 1;
   string product_id = 2;
   string name = 3;
   string sku = 4;
@@ -73,11 +67,35 @@ message GetActivityResponse {
   string Description = 21;
 }
 
+message DownloadGPXRequest { string sku = 1; }
+
+message DownloadGPXResponse { string gpx = 1; }
+
+message GPX {
+  string sku = 1;
+  string gpx = 2;
+}
+
 message CreateGPXRequest {
   string sku = 1;
   string gpx = 2;
 }
 
-message DownloadGPXRequest { string sku = 1; }
+message UpdateGPXRequest {
+  string sku = 1;
+  string gpx = 2;
+}
 
-message DownloadGPXResponse { string gpx = 1; }
+message DeleteGPXRequest { string sku = 1; }
+
+message ListGPXRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message ListGPXResponse {
+  repeated GPX items = 1;
+  int32 total = 2;
+}
+
+message GetGPXRequest { string sku = 1; }

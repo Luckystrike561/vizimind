@@ -1,4 +1,4 @@
-package regiondo
+package visugpx
 
 import (
 	"context"
@@ -13,17 +13,16 @@ import (
 type Option service.Option[*client]
 
 type Config struct {
-	Debug      bool
-	URL        string
-	Timeout    time.Duration
-	PublicKey  string
-	PrivateKey string
+	Debug   bool
+	URL     string
+	Timeout time.Duration
+	CIE     string
 }
 
 type Client interface {
 	Init() error
-	GetOrder(ctx context.Context, id string, lang string) (*Order, error)
-	GetProduct(ctx context.Context, id string, lang string) (*Product, error)
+	ListActivities(ctx context.Context) (map[string]*Activity, error)
+	DownloadGPX(ctx context.Context, id string) (string, error)
 }
 
 type client struct {
@@ -43,11 +42,7 @@ func New(cfg *Config, options ...Option) Client {
 
 func (c *client) Init() error {
 	c.Client = c.SetBaseURL(c.cfg.URL).
-		SetTimeout(c.cfg.Timeout).
-		SetCommonHeaders(map[string]string{
-			"Content-Type": "application/json",
-			"X-API-ID":     c.cfg.PublicKey,
-		})
+		SetTimeout(c.cfg.Timeout)
 
 	if c.cfg.Debug {
 		c.Client = c.DevMode()

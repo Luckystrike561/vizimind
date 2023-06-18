@@ -9,11 +9,11 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetReservation(
+func (s *Server) GetActivity(
 	ctx context.Context,
-	req *v1.GetReservationRequest,
-) (*v1.GetReservationResponse, error) {
-	order, err := s.regiondoSvc.GetOrder(ctx, req.GetReservationId(), req.GetLanguage())
+	req *v1.GetActivityRequest,
+) (*v1.GetActivityResponse, error) {
+	order, err := s.regiondoSvc.GetOrder(ctx, req.GetOrderId(), req.GetLanguage())
 	if err != nil {
 		log.Error().
 			Err(err).
@@ -32,8 +32,8 @@ func (s *Server) GetReservation(
 		return nil, status.Error(codes.Internal, "couldn't get product")
 	}
 
-	return &v1.GetReservationResponse{
-		Reservation:      req.GetReservationId(),
+	return &v1.GetActivityResponse{
+		OrderId:          req.GetOrderId(),
 		ProductId:        order.GetProductID(),
 		Name:             product.Data.Name,
 		Sku:              product.Data.Sku,

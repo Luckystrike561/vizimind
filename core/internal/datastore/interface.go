@@ -7,6 +7,8 @@ import (
 )
 
 type Datastore interface {
-	CreateGPX(ctx context.Context, gpx *model.GPX) error
+	UpsertGPX(ctx context.Context, gpx *model.GPX) (*model.GPX, error)
 	GetGPX(ctx context.Context, id string) (*model.GPX, error)
+	ListGPX(ctx context.Context, offset, limit int32) ([]*model.GPX, error)
+	DeleteGPX(ctx context.Context, id string) error
 }

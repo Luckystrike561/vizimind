@@ -9,29 +9,31 @@ consumes:
 produces:
   - application/json
 paths:
-  /gpx:
-    post:
-      summary: Create gpx
-      description: Store gpx into database
-      operationId: CoreService_CreateGPX
+  /activity/{order_id}:
+    get:
+      summary: Get activity
+      description: Returns the activity
+      operationId: CoreService_GetActivity
       responses:
         "200":
           description: A successful response.
           schema:
-            type: object
-            properties: {}
+            $ref: '#/definitions/v1GetActivityResponse'
         default:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/rpcStatus'
       parameters:
-        - name: body
-          in: body
+        - name: order_id
+          in: path
           required: true
-          schema:
-            $ref: '#/definitions/v1CreateGPXRequest'
+          type: string
+        - name: language
+          in: query
+          required: false
+          type: string
       tags:
-        - gpx
+        - activity
   /gpx/{sku}:
     get:
       summary: Get gpx
@@ -53,31 +55,6 @@ paths:
           type: string
       tags:
         - gpx
-  /reservations/{reservation_id}:
-    get:
-      summary: Get reservation
-      description: Returns the reservation
-      operationId: CoreService_GetReservation
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/v1GetReservationResponse'
-        default:
-          description: An unexpected error response.
-          schema:
-            $ref: '#/definitions/rpcStatus'
-      parameters:
-        - name: reservation_id
-          in: path
-          required: true
-          type: string
-        - name: language
-          in: query
-          required: false
-          type: string
-      tags:
-        - reservation
 definitions:
   protobufAny:
     type: object
@@ -98,22 +75,22 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
-  v1CreateGPXRequest:
+  v1DownloadGPXResponse:
+    type: object
+    properties:
+      gpx:
+        type: string
+  v1GPX:
     type: object
     properties:
       sku:
         type: string
       gpx:
         type: string
-  v1DownloadGPXResponse:
+  v1GetActivityResponse:
     type: object
     properties:
-      gpx:
-        type: string
-  v1GetReservationResponse:
-    type: object
-    properties:
-      reservation:
+      order_id:
         type: string
       product_id:
         type: string
@@ -155,3 +132,14 @@ definitions:
         type: string
       Description:
         type: string
+  v1ListGPXResponse:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/v1GPX'
+      total:
+        type: integer
+        format: int32

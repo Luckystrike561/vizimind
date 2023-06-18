@@ -9,56 +9,56 @@ import (
 
 type Order struct {
 	ContactData struct {
-		Email     string `json:"email"`
-		Firstname string `json:"firstname"`
-		Lastname  string `json:"lastname"`
-	} `json:"contact_data"`
-	Currency              string        `json:"currency"`
-	DiscountInfo          []interface{} `json:"discount_info"`
-	GrandTotal            float64       `json:"grand_total"`
-	InfoGeneratedAt       string        `json:"info_generated_at"`
-	Items                 []Item        `json:"items"`
-	OrderID               string        `json:"order_id"`
-	OrderNumber           string        `json:"order_number"`
-	PaymentAdditionalInfo string        `json:"payment_additional_info"`
-	PaymentMethod         string        `json:"payment_method"`
+		Email     string `json:"email,omitempty"`
+		Firstname string `json:"firstname,omitempty"`
+		Lastname  string `json:"lastname,omitempty"`
+	} `json:"contact_data,omitempty"`
+	Currency              string        `json:"currency,omitempty"`
+	DiscountInfo          []interface{} `json:"discount_info,omitempty"`
+	GrandTotal            float64       `json:"grand_total,omitempty"`
+	InfoGeneratedAt       string        `json:"info_generated_at,omitempty"`
+	Items                 []Item        `json:"items,omitempty"`
+	OrderID               string        `json:"order_id,omitempty"`
+	OrderNumber           string        `json:"order_number,omitempty"`
+	PaymentAdditionalInfo string        `json:"payment_additional_info,omitempty"`
+	PaymentMethod         string        `json:"payment_method,omitempty"`
 	PaymentStatus         struct {
-		Code           string        `json:"code"`
-		Label          string        `json:"label"`
-		OfflineAmounts []interface{} `json:"offline_amounts"`
-	} `json:"payment_status"`
-	PurchasedAt         string  `json:"purchased_at"`
-	SalesChannel        string  `json:"sales_channel"`
-	Subtotal            float64 `json:"subtotal"`
-	TaxAmount           float64 `json:"tax_amount"`
-	Timezone            string  `json:"timezone"`
-	TotalTicketsCreated int64   `json:"total_tickets_created"`
-	TotalTicketsOrdered int64   `json:"total_tickets_ordered"`
+		Code           string        `json:"code,omitempty"`
+		Label          string        `json:"label,omitempty"`
+		OfflineAmounts []interface{} `json:"offline_amounts,omitempty"`
+	} `json:"payment_status,omitempty"`
+	PurchasedAt         string  `json:"purchased_at,omitempty"`
+	SalesChannel        string  `json:"sales_channel,omitempty"`
+	Subtotal            float64 `json:"subtotal,omitempty"`
+	TaxAmount           float64 `json:"tax_amount,omitempty"`
+	Timezone            string  `json:"timezone,omitempty"`
+	TotalTicketsCreated int64   `json:"total_tickets_created,omitempty"`
+	TotalTicketsOrdered int64   `json:"total_tickets_ordered,omitempty"`
 }
 
 type Item struct {
-	BookingKey         string        `json:"booking_key"`
-	Currency           string        `json:"currency"`
-	EventDateTime      string        `json:"event_date_time"`
-	ItemTypeCode       string        `json:"item_type_code"`
-	PaymentStatus      string        `json:"payment_status"`
-	PricePerOneExclTax float64       `json:"price_per_one_excl_tax"`
-	PricePerOneInclTax float64       `json:"price_per_one_incl_tax"`
-	ProductID          string        `json:"product_id"`
-	Resources          []interface{} `json:"resources"`
-	RowTotalExclTax    float64       `json:"row_total_excl_tax"`
-	RowTotalInclTax    float64       `json:"row_total_incl_tax"`
-	RowTotalTaxAmount  float64       `json:"row_total_tax_amount"`
-	SalesChannel       string        `json:"sales_channel"`
-	Status             string        `json:"status"`
-	TicketCodes        []interface{} `json:"ticket_codes"`
-	TicketName         string        `json:"ticket_name"`
-	TicketOption       string        `json:"ticket_option"`
-	TicketOptionID     int64         `json:"ticket_option_id"`
-	TicketQty          int64         `json:"ticket_qty"`
-	TicketQtyCanceled  int64         `json:"ticket_qty_canceled"`
-	TicketVariation    string        `json:"ticket_variation"`
-	UniqueItemID       string        `json:"unique_item_id"`
+	BookingKey         string        `json:"booking_key,omitempty"`
+	Currency           string        `json:"currency,omitempty"`
+	EventDateTime      string        `json:"event_date_time,omitempty"`
+	ItemTypeCode       string        `json:"item_type_code,omitempty"`
+	PaymentStatus      string        `json:"payment_status,omitempty"`
+	PricePerOneExclTax float64       `json:"price_per_one_excl_tax,omitempty"`
+	PricePerOneInclTax float64       `json:"price_per_one_incl_tax,omitempty"`
+	ProductID          string        `json:"product_id,omitempty"`
+	Resources          []interface{} `json:"resources,omitempty"`
+	RowTotalExclTax    float64       `json:"row_total_excl_tax,omitempty"`
+	RowTotalInclTax    float64       `json:"row_total_incl_tax,omitempty"`
+	RowTotalTaxAmount  float64       `json:"row_total_tax_amount,omitempty"`
+	SalesChannel       string        `json:"sales_channel,omitempty"`
+	Status             string        `json:"status,omitempty"`
+	TicketCodes        []interface{} `json:"ticket_codes,omitempty"`
+	TicketName         string        `json:"ticket_name,omitempty"`
+	TicketOption       string        `json:"ticket_option,omitempty"`
+	TicketOptionID     int64         `json:"ticket_option_id,omitempty"`
+	TicketQty          int64         `json:"ticket_qty,omitempty"`
+	TicketQtyCanceled  int64         `json:"ticket_qty_canceled,omitempty"`
+	TicketVariation    string        `json:"ticket_variation,omitempty"`
+	UniqueItemID       string        `json:"unique_item_id,omitempty"`
 }
 
 func (o *Order) GetProductID() string {

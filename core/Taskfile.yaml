@@ -2,18 +2,23 @@ version: "3"
 
 tasks:
   run:
+    desc: Run the application
     cmds:
       - go run main.go
   gen:
+    desc: Generate code
     cmds:
       - buf generate --config buf.yaml --template ./proto/buf.gen.yaml --path ./proto
   tidy:
+    desc: Tidy go modules
     cmds:
       - go mod tidy
   test:
+    desc: Run tests
     cmds:
       - go test ./... -v -count=1 -cover -race
   lint:
+    desc: Run linters
     cmds:
       - golint ./...
       - golangci-lint run --out-format checkstyle
