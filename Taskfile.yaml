@@ -4,3 +4,6 @@ includes:
   core:
     taskfile: ./core/Taskfile.yaml
     dir: ./core
+  dash:
+    taskfile: ./app/dashboard/Taskfile.yaml
+    dir: ./app/dashboard
