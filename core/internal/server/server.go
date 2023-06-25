@@ -32,8 +32,9 @@ type ServerGRPCConfig struct {
 }
 
 type Config struct {
-	HTTP *ServerHTTPConfig `koanf:"http"`
-	GRPC *ServerGRPCConfig `koanf:"grpc"`
+	HTTP   *ServerHTTPConfig `koanf:"http"`
+	GRPC   *ServerGRPCConfig `koanf:"grpc"`
+	Public bool              `koanf:"public"`
 }
 
 type Server struct {
@@ -74,6 +75,7 @@ func New(cfg *Config, postgresSvc datastore.Datastore, regiondoSvc regiondo.Clie
 			)),
 		}...),
 		regiondoSvc: regiondoSvc,
+		postgresSvc: postgresSvc,
 	}
 
 	srv.http = &http.Server{
@@ -94,7 +96,7 @@ func (s *Server) Init() error {
 		return fmt.Errorf("couldn't init server err: %w", err)
 	}
 
-	s.http.Handler = cors.Default().Handler(s.http.Handler)
+	s.http.Handler = cors.AllowAll().Handler(s.http.Handler)
 
 	s.clientConn, err = grpc.DialContext(
 		context.Background(),

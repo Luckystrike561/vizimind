@@ -3,6 +3,7 @@ package regiondo
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 )
@@ -45,7 +46,7 @@ type Item struct {
 	PricePerOneExclTax float64       `json:"price_per_one_excl_tax,omitempty"`
 	PricePerOneInclTax float64       `json:"price_per_one_incl_tax,omitempty"`
 	ProductID          string        `json:"product_id,omitempty"`
-	Resources          []interface{} `json:"resources,omitempty"`
+	Resources          []*Resource   `json:"resources,omitempty"`
 	RowTotalExclTax    float64       `json:"row_total_excl_tax,omitempty"`
 	RowTotalInclTax    float64       `json:"row_total_incl_tax,omitempty"`
 	RowTotalTaxAmount  float64       `json:"row_total_tax_amount,omitempty"`
@@ -61,6 +62,12 @@ type Item struct {
 	UniqueItemID       string        `json:"unique_item_id,omitempty"`
 }
 
+type Resource struct {
+	ResourceID   string `json:"resource_id,omitempty"`
+	Consumption  string `json:"consumption,omitempty"`
+	ResourceName string `json:"resource_name,omitempty"`
+}
+
 func (o *Order) GetProductID() string {
 	if o == nil {
 		return ""
@@ -71,6 +78,35 @@ func (o *Order) GetProductID() string {
 	}
 
 	return o.Items[0].ProductID
+}
+
+func (o *Order) GetEventDate() string {
+	if o == nil {
+		return ""
+	}
+
+	if len(o.Items) == 0 {
+		return ""
+	}
+
+	return o.Items[0].EventDateTime
+}
+
+func (o *Order) GetResources() []string {
+	if o == nil {
+		return nil
+	}
+
+	if len(o.Items) == 0 {
+		return nil
+	}
+
+	resources := make([]string, 0, len(o.Items[0].Resources))
+	for _, r := range o.Items[0].Resources {
+		resources = append(resources, strings.ReplaceAll(strings.Split(r.ResourceName, "|")[0], " ", ""))
+	}
+
+	return resources
 }
 
 func (c *client) GetOrder(ctx context.Context, id string, lang string) (*Order, error) {

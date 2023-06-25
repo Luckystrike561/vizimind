@@ -54,5 +54,8 @@ func (s *Server) GetActivity(
 		RatingSummary:    product.Data.RatingSummary,
 		ReviewsCount:     product.Data.ReviewsCount,
 		Description:      product.Data.Description,
+		Date:             order.GetEventDate(),
+		PurchasedAt:      order.PurchasedAt,
+		Resources:        order.GetResources(),
 	}, nil
 }

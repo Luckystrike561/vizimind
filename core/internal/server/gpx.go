@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"strings"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/luckystrike561/vizimind/core/internal/model"
@@ -12,8 +13,12 @@ import (
 )
 
 func (s *Server) CreateGPX(ctx context.Context, req *v1.CreateGPXRequest) (*v1.GPX, error) {
+	if s.cfg.Public == true {
+		return nil, status.Error(codes.PermissionDenied, "permission denied")
+	}
+
 	gpx, err := s.postgresSvc.UpsertGPX(ctx, &model.GPX{
-		ID:   req.GetSku(),
+		ID:   strings.ToLower(req.GetSku()),
 		Data: req.GetGpx(),
 	})
 	if err != nil {
@@ -31,8 +36,12 @@ func (s *Server) CreateGPX(ctx context.Context, req *v1.CreateGPXRequest) (*v1.G
 }
 
 func (s *Server) UpdateGPX(ctx context.Context, req *v1.UpdateGPXRequest) (*v1.GPX, error) {
+	if s.cfg.Public == true {
+		return nil, status.Error(codes.PermissionDenied, "permission denied")
+	}
+
 	gpx, err := s.postgresSvc.UpsertGPX(ctx, &model.GPX{
-		ID:   req.GetSku(),
+		ID:   strings.ToLower(req.GetSku()),
 		Data: req.GetGpx(),
 	})
 	if err != nil {
@@ -50,7 +59,11 @@ func (s *Server) UpdateGPX(ctx context.Context, req *v1.UpdateGPXRequest) (*v1.G
 }
 
 func (s *Server) DeleteGPX(ctx context.Context, req *v1.DeleteGPXRequest) (*empty.Empty, error) {
-	if err := s.postgresSvc.DeleteGPX(ctx, req.GetSku()); err != nil {
+	if s.cfg.Public == true {
+		return nil, status.Error(codes.PermissionDenied, "permission denied")
+	}
+
+	if err := s.postgresSvc.DeleteGPX(ctx, strings.ToLower(req.GetSku())); err != nil {
 		log.Error().
 			Err(err).
 			Msg("couldn't delete gpx")
@@ -62,7 +75,22 @@ func (s *Server) DeleteGPX(ctx context.Context, req *v1.DeleteGPXRequest) (*empt
 }
 
 func (s *Server) ListGPX(ctx context.Context, req *v1.ListGPXRequest) (*v1.ListGPXResponse, error) {
-	gpxs, err := s.postgresSvc.ListGPX(ctx, req.GetOffset(), req.GetLimit())
+	if s.cfg.Public == true {
+		return nil, status.Error(codes.PermissionDenied, "permission denied")
+	}
+
+	offset := req.GetOffset()
+	limit := req.GetLimit()
+
+	if offset <= 0 {
+		offset = 0
+	}
+
+	if limit <= 0 {
+		limit = 10
+	}
+
+	gpxs, err := s.postgresSvc.ListGPX(ctx, offset, limit)
 	if err != nil {
 		log.Error().
 			Err(err).
@@ -72,7 +100,7 @@ func (s *Server) ListGPX(ctx context.Context, req *v1.ListGPXRequest) (*v1.ListG
 	}
 
 	resp := &v1.ListGPXResponse{
-		Items: make([]*v1.GPX, 0, len(gpxs)),
+		Items: make([]*v1.GPX, len(gpxs)),
 		Total: int32(len(gpxs)),
 	}
 	for i, gpx := range gpxs {
@@ -86,7 +114,11 @@ func (s *Server) ListGPX(ctx context.Context, req *v1.ListGPXRequest) (*v1.ListG
 }
 
 func (s *Server) GetGPX(ctx context.Context, req *v1.GetGPXRequest) (*v1.GPX, error) {
-	gpx, err := s.postgresSvc.GetGPX(ctx, req.GetSku())
+	if s.cfg.Public == true {
+		return nil, status.Error(codes.PermissionDenied, "permission denied")
+	}
+
+	gpx, err := s.postgresSvc.GetGPX(ctx, strings.ToLower(req.GetSku()))
 	if err != nil {
 		log.Error().
 			Err(err).
@@ -102,7 +134,7 @@ func (s *Server) GetGPX(ctx context.Context, req *v1.GetGPXRequest) (*v1.GPX, er
 }
 
 func (s *Server) DownloadGPX(ctx context.Context, req *v1.DownloadGPXRequest) (*v1.DownloadGPXResponse, error) {
-	gpx, err := s.postgresSvc.GetGPX(ctx, req.GetSku())
+	gpx, err := s.postgresSvc.GetGPX(ctx, strings.ToLower(req.GetSku()))
 	if err != nil {
 		log.Error().
 			Err(err).

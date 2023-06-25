@@ -22,7 +22,7 @@ service CoreService {
 
   rpc DownloadGPX(DownloadGPXRequest) returns (DownloadGPXResponse) {
     option (google.api.http) = {
-      get : "/gpx/{sku}"
+      get : "/gpx/{sku}/download"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary : "Get gpx"
@@ -31,11 +31,61 @@ service CoreService {
     };
   }
 
-  rpc CreateGPX(CreateGPXRequest) returns (GPX);
-  rpc UpdateGPX(UpdateGPXRequest) returns (GPX);
-  rpc DeleteGPX(DeleteGPXRequest) returns (google.protobuf.Empty);
-  rpc ListGPX(ListGPXRequest) returns (ListGPXResponse);
-  rpc GetGPX(GetGPXRequest) returns (GPX);
+  rpc CreateGPX(CreateGPXRequest) returns (GPX) {
+    option (google.api.http) = {
+      post : "/gpx"
+      body : "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Create gpx"
+      description : ""
+      tags : "gpx"
+    };
+  }
+
+  rpc UpdateGPX(UpdateGPXRequest) returns (GPX) {
+    option (google.api.http) = {
+      put : "/gpx/{sku}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Update gpx"
+      description : ""
+      tags : "gpx"
+    };
+  }
+
+  rpc DeleteGPX(DeleteGPXRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete : "/gpx/{sku}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Delete gpx"
+      description : ""
+      tags : "gpx"
+    };
+  }
+
+  rpc ListGPX(ListGPXRequest) returns (ListGPXResponse) {
+    option (google.api.http) = {
+      get : "/gpx"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Get activity"
+      description : ""
+      tags : "activity"
+    };
+  }
+
+  rpc GetGPX(GetGPXRequest) returns (GPX) {
+    option (google.api.http) = {
+      get : "/gpx/{sku}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary : "Get gpx"
+      description : "Returns the gpx"
+      tags : "gpx"
+    };
+  }
 }
 
 message GetActivityRequest {
@@ -65,6 +115,9 @@ message GetActivityResponse {
   string rating_summary = 19;
   string reviews_count = 20;
   string Description = 21;
+  string date = 22;
+  string purchased_at = 23;
+  repeated string resources = 24;
 }
 
 message DownloadGPXRequest { string sku = 1; }
