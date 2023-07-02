@@ -1,0 +1,19 @@
+version: "3"
+
+tasks:
+  run:
+    desc: Run the app
+    cmds:
+      - npm run dev
+  build-prod:
+    desc: Build the app for production
+    cmds:
+      - npm run build-production
+  build-staging:
+    desc: Build the app for staging
+    cmds:
+      - npm run build-staging
+  serve:
+    desc: Serve the app
+    cmds:
+      - npm run serve

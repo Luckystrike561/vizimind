@@ -44,7 +44,7 @@ func (p *Postgres) Init() error {
 		return err
 	}
 
-	if err := p.db.AutoMigrate(&model.GPX{}); err != nil {
+	if err := p.db.AutoMigrate(&model.Activity{}); err != nil {
 		log.Error().Err(err).Msg("failed to auto migrate")
 
 		return err

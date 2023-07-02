@@ -20,26 +20,24 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	CoreService_GetActivity_FullMethodName = "/proto.core.v1.CoreService/GetActivity"
-	CoreService_DownloadGPX_FullMethodName = "/proto.core.v1.CoreService/DownloadGPX"
-	CoreService_CreateGPX_FullMethodName   = "/proto.core.v1.CoreService/CreateGPX"
-	CoreService_UpdateGPX_FullMethodName   = "/proto.core.v1.CoreService/UpdateGPX"
-	CoreService_DeleteGPX_FullMethodName   = "/proto.core.v1.CoreService/DeleteGPX"
-	CoreService_ListGPX_FullMethodName     = "/proto.core.v1.CoreService/ListGPX"
-	CoreService_GetGPX_FullMethodName      = "/proto.core.v1.CoreService/GetGPX"
+	CoreService_GetActivityByOrderID_FullMethodName = "/proto.core.v1.CoreService/GetActivityByOrderID"
+	CoreService_DownloadGPX_FullMethodName          = "/proto.core.v1.CoreService/DownloadGPX"
+	CoreService_CreateActivity_FullMethodName       = "/proto.core.v1.CoreService/CreateActivity"
+	CoreService_DeleteActivity_FullMethodName       = "/proto.core.v1.CoreService/DeleteActivity"
+	CoreService_ListActivity_FullMethodName         = "/proto.core.v1.CoreService/ListActivity"
+	CoreService_GetActivity_FullMethodName          = "/proto.core.v1.CoreService/GetActivity"
 )
 
 // CoreServiceClient is the client API for CoreService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoreServiceClient interface {
-	GetActivity(ctx context.Context, in *GetActivityRequest, opts ...grpc.CallOption) (*GetActivityResponse, error)
+	GetActivityByOrderID(ctx context.Context, in *GetActivityByOrderIDRequest, opts ...grpc.CallOption) (*GetActivityByOrderIDResponse, error)
 	DownloadGPX(ctx context.Context, in *DownloadGPXRequest, opts ...grpc.CallOption) (*DownloadGPXResponse, error)
-	CreateGPX(ctx context.Context, in *CreateGPXRequest, opts ...grpc.CallOption) (*GPX, error)
-	UpdateGPX(ctx context.Context, in *UpdateGPXRequest, opts ...grpc.CallOption) (*GPX, error)
-	DeleteGPX(ctx context.Context, in *DeleteGPXRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	ListGPX(ctx context.Context, in *ListGPXRequest, opts ...grpc.CallOption) (*ListGPXResponse, error)
-	GetGPX(ctx context.Context, in *GetGPXRequest, opts ...grpc.CallOption) (*GPX, error)
+	CreateActivity(ctx context.Context, in *CreateActivityRequest, opts ...grpc.CallOption) (*Activity, error)
+	DeleteActivity(ctx context.Context, in *DeleteActivityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListActivity(ctx context.Context, in *ListActivityRequest, opts ...grpc.CallOption) (*ListActivityResponse, error)
+	GetActivity(ctx context.Context, in *GetActivityRequest, opts ...grpc.CallOption) (*Activity, error)
 }
 
 type coreServiceClient struct {
@@ -50,9 +48,9 @@ func NewCoreServiceClient(cc grpc.ClientConnInterface) CoreServiceClient {
 	return &coreServiceClient{cc}
 }
 
-func (c *coreServiceClient) GetActivity(ctx context.Context, in *GetActivityRequest, opts ...grpc.CallOption) (*GetActivityResponse, error) {
-	out := new(GetActivityResponse)
-	err := c.cc.Invoke(ctx, CoreService_GetActivity_FullMethodName, in, out, opts...)
+func (c *coreServiceClient) GetActivityByOrderID(ctx context.Context, in *GetActivityByOrderIDRequest, opts ...grpc.CallOption) (*GetActivityByOrderIDResponse, error) {
+	out := new(GetActivityByOrderIDResponse)
+	err := c.cc.Invoke(ctx, CoreService_GetActivityByOrderID_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,45 +66,36 @@ func (c *coreServiceClient) DownloadGPX(ctx context.Context, in *DownloadGPXRequ
 	return out, nil
 }
 
-func (c *coreServiceClient) CreateGPX(ctx context.Context, in *CreateGPXRequest, opts ...grpc.CallOption) (*GPX, error) {
-	out := new(GPX)
-	err := c.cc.Invoke(ctx, CoreService_CreateGPX_FullMethodName, in, out, opts...)
+func (c *coreServiceClient) CreateActivity(ctx context.Context, in *CreateActivityRequest, opts ...grpc.CallOption) (*Activity, error) {
+	out := new(Activity)
+	err := c.cc.Invoke(ctx, CoreService_CreateActivity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *coreServiceClient) UpdateGPX(ctx context.Context, in *UpdateGPXRequest, opts ...grpc.CallOption) (*GPX, error) {
-	out := new(GPX)
-	err := c.cc.Invoke(ctx, CoreService_UpdateGPX_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *coreServiceClient) DeleteGPX(ctx context.Context, in *DeleteGPXRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *coreServiceClient) DeleteActivity(ctx context.Context, in *DeleteActivityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, CoreService_DeleteGPX_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, CoreService_DeleteActivity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *coreServiceClient) ListGPX(ctx context.Context, in *ListGPXRequest, opts ...grpc.CallOption) (*ListGPXResponse, error) {
-	out := new(ListGPXResponse)
-	err := c.cc.Invoke(ctx, CoreService_ListGPX_FullMethodName, in, out, opts...)
+func (c *coreServiceClient) ListActivity(ctx context.Context, in *ListActivityRequest, opts ...grpc.CallOption) (*ListActivityResponse, error) {
+	out := new(ListActivityResponse)
+	err := c.cc.Invoke(ctx, CoreService_ListActivity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *coreServiceClient) GetGPX(ctx context.Context, in *GetGPXRequest, opts ...grpc.CallOption) (*GPX, error) {
-	out := new(GPX)
-	err := c.cc.Invoke(ctx, CoreService_GetGPX_FullMethodName, in, out, opts...)
+func (c *coreServiceClient) GetActivity(ctx context.Context, in *GetActivityRequest, opts ...grpc.CallOption) (*Activity, error) {
+	out := new(Activity)
+	err := c.cc.Invoke(ctx, CoreService_GetActivity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -117,39 +106,35 @@ func (c *coreServiceClient) GetGPX(ctx context.Context, in *GetGPXRequest, opts 
 // All implementations should embed UnimplementedCoreServiceServer
 // for forward compatibility
 type CoreServiceServer interface {
-	GetActivity(context.Context, *GetActivityRequest) (*GetActivityResponse, error)
+	GetActivityByOrderID(context.Context, *GetActivityByOrderIDRequest) (*GetActivityByOrderIDResponse, error)
 	DownloadGPX(context.Context, *DownloadGPXRequest) (*DownloadGPXResponse, error)
-	CreateGPX(context.Context, *CreateGPXRequest) (*GPX, error)
-	UpdateGPX(context.Context, *UpdateGPXRequest) (*GPX, error)
-	DeleteGPX(context.Context, *DeleteGPXRequest) (*emptypb.Empty, error)
-	ListGPX(context.Context, *ListGPXRequest) (*ListGPXResponse, error)
-	GetGPX(context.Context, *GetGPXRequest) (*GPX, error)
+	CreateActivity(context.Context, *CreateActivityRequest) (*Activity, error)
+	DeleteActivity(context.Context, *DeleteActivityRequest) (*emptypb.Empty, error)
+	ListActivity(context.Context, *ListActivityRequest) (*ListActivityResponse, error)
+	GetActivity(context.Context, *GetActivityRequest) (*Activity, error)
 }
 
 // UnimplementedCoreServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedCoreServiceServer struct {
 }
 
-func (UnimplementedCoreServiceServer) GetActivity(context.Context, *GetActivityRequest) (*GetActivityResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetActivity not implemented")
+func (UnimplementedCoreServiceServer) GetActivityByOrderID(context.Context, *GetActivityByOrderIDRequest) (*GetActivityByOrderIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivityByOrderID not implemented")
 }
 func (UnimplementedCoreServiceServer) DownloadGPX(context.Context, *DownloadGPXRequest) (*DownloadGPXResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DownloadGPX not implemented")
 }
-func (UnimplementedCoreServiceServer) CreateGPX(context.Context, *CreateGPXRequest) (*GPX, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateGPX not implemented")
+func (UnimplementedCoreServiceServer) CreateActivity(context.Context, *CreateActivityRequest) (*Activity, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateActivity not implemented")
 }
-func (UnimplementedCoreServiceServer) UpdateGPX(context.Context, *UpdateGPXRequest) (*GPX, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateGPX not implemented")
+func (UnimplementedCoreServiceServer) DeleteActivity(context.Context, *DeleteActivityRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteActivity not implemented")
 }
-func (UnimplementedCoreServiceServer) DeleteGPX(context.Context, *DeleteGPXRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteGPX not implemented")
+func (UnimplementedCoreServiceServer) ListActivity(context.Context, *ListActivityRequest) (*ListActivityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListActivity not implemented")
 }
-func (UnimplementedCoreServiceServer) ListGPX(context.Context, *ListGPXRequest) (*ListGPXResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListGPX not implemented")
-}
-func (UnimplementedCoreServiceServer) GetGPX(context.Context, *GetGPXRequest) (*GPX, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGPX not implemented")
+func (UnimplementedCoreServiceServer) GetActivity(context.Context, *GetActivityRequest) (*Activity, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivity not implemented")
 }
 
 // UnsafeCoreServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -163,20 +148,20 @@ func RegisterCoreServiceServer(s grpc.ServiceRegistrar, srv CoreServiceServer) {
 	s.RegisterService(&CoreService_ServiceDesc, srv)
 }
 
-func _CoreService_GetActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetActivityRequest)
+func _CoreService_GetActivityByOrderID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetActivityByOrderIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoreServiceServer).GetActivity(ctx, in)
+		return srv.(CoreServiceServer).GetActivityByOrderID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CoreService_GetActivity_FullMethodName,
+		FullMethod: CoreService_GetActivityByOrderID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoreServiceServer).GetActivity(ctx, req.(*GetActivityRequest))
+		return srv.(CoreServiceServer).GetActivityByOrderID(ctx, req.(*GetActivityByOrderIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -199,92 +184,74 @@ func _CoreService_DownloadGPX_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CoreService_CreateGPX_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateGPXRequest)
+func _CoreService_CreateActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoreServiceServer).CreateGPX(ctx, in)
+		return srv.(CoreServiceServer).CreateActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CoreService_CreateGPX_FullMethodName,
+		FullMethod: CoreService_CreateActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoreServiceServer).CreateGPX(ctx, req.(*CreateGPXRequest))
+		return srv.(CoreServiceServer).CreateActivity(ctx, req.(*CreateActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CoreService_UpdateGPX_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateGPXRequest)
+func _CoreService_DeleteActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoreServiceServer).UpdateGPX(ctx, in)
+		return srv.(CoreServiceServer).DeleteActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CoreService_UpdateGPX_FullMethodName,
+		FullMethod: CoreService_DeleteActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoreServiceServer).UpdateGPX(ctx, req.(*UpdateGPXRequest))
+		return srv.(CoreServiceServer).DeleteActivity(ctx, req.(*DeleteActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CoreService_DeleteGPX_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteGPXRequest)
+func _CoreService_ListActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoreServiceServer).DeleteGPX(ctx, in)
+		return srv.(CoreServiceServer).ListActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CoreService_DeleteGPX_FullMethodName,
+		FullMethod: CoreService_ListActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoreServiceServer).DeleteGPX(ctx, req.(*DeleteGPXRequest))
+		return srv.(CoreServiceServer).ListActivity(ctx, req.(*ListActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CoreService_ListGPX_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListGPXRequest)
+func _CoreService_GetActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetActivityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoreServiceServer).ListGPX(ctx, in)
+		return srv.(CoreServiceServer).GetActivity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CoreService_ListGPX_FullMethodName,
+		FullMethod: CoreService_GetActivity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoreServiceServer).ListGPX(ctx, req.(*ListGPXRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _CoreService_GetGPX_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetGPXRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CoreServiceServer).GetGPX(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: CoreService_GetGPX_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoreServiceServer).GetGPX(ctx, req.(*GetGPXRequest))
+		return srv.(CoreServiceServer).GetActivity(ctx, req.(*GetActivityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -297,32 +264,28 @@ var CoreService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CoreServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetActivity",
-			Handler:    _CoreService_GetActivity_Handler,
+			MethodName: "GetActivityByOrderID",
+			Handler:    _CoreService_GetActivityByOrderID_Handler,
 		},
 		{
 			MethodName: "DownloadGPX",
 			Handler:    _CoreService_DownloadGPX_Handler,
 		},
 		{
-			MethodName: "CreateGPX",
-			Handler:    _CoreService_CreateGPX_Handler,
+			MethodName: "CreateActivity",
+			Handler:    _CoreService_CreateActivity_Handler,
 		},
 		{
-			MethodName: "UpdateGPX",
-			Handler:    _CoreService_UpdateGPX_Handler,
+			MethodName: "DeleteActivity",
+			Handler:    _CoreService_DeleteActivity_Handler,
 		},
 		{
-			MethodName: "DeleteGPX",
-			Handler:    _CoreService_DeleteGPX_Handler,
+			MethodName: "ListActivity",
+			Handler:    _CoreService_ListActivity_Handler,
 		},
 		{
-			MethodName: "ListGPX",
-			Handler:    _CoreService_ListGPX_Handler,
-		},
-		{
-			MethodName: "GetGPX",
-			Handler:    _CoreService_GetGPX_Handler,
+			MethodName: "GetActivity",
+			Handler:    _CoreService_GetActivity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

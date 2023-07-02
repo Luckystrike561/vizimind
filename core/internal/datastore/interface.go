@@ -7,8 +7,8 @@ import (
 )
 
 type Datastore interface {
-	UpsertGPX(ctx context.Context, gpx *model.GPX) (*model.GPX, error)
-	GetGPX(ctx context.Context, id string) (*model.GPX, error)
-	ListGPX(ctx context.Context, offset, limit int32) ([]*model.GPX, error)
-	DeleteGPX(ctx context.Context, id string) error
+	UpsertActivity(ctx context.Context, activity *model.Activity) (*model.Activity, error)
+	GetActivity(ctx context.Context, id string) (*model.Activity, error)
+	ListActivity(ctx context.Context, offset, limit int32) ([]*model.Activity, error)
+	DeleteActivity(ctx context.Context, id string) error
 }

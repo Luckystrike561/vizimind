@@ -40,17 +40,17 @@ type Config struct {
 type Server struct {
 	v1.UnimplementedCoreServiceServer
 
-	cfg         *Config
-	grpc        *grpc.Server
-	gwMux       *runtime.ServeMux
-	http        *http.Server
-	listener    net.Listener
-	clientConn  *grpc.ClientConn
-	postgresSvc datastore.Datastore
-	regiondoSvc regiondo.Client
+	cfg          *Config
+	grpc         *grpc.Server
+	gwMux        *runtime.ServeMux
+	http         *http.Server
+	listener     net.Listener
+	clientConn   *grpc.ClientConn
+	datastoreSvc datastore.Datastore
+	regiondoSvc  regiondo.Client
 }
 
-func New(cfg *Config, postgresSvc datastore.Datastore, regiondoSvc regiondo.Client) *Server {
+func New(cfg *Config, datastoreSvc datastore.Datastore, regiondoSvc regiondo.Client) *Server {
 	srv := &Server{
 		cfg: cfg,
 		gwMux: runtime.NewServeMux([]runtime.ServeMuxOption{
@@ -74,8 +74,8 @@ func New(cfg *Config, postgresSvc datastore.Datastore, regiondoSvc regiondo.Clie
 				grpcrecovery.UnaryServerInterceptor(),
 			)),
 		}...),
-		regiondoSvc: regiondoSvc,
-		postgresSvc: postgresSvc,
+		regiondoSvc:  regiondoSvc,
+		datastoreSvc: datastoreSvc,
 	}
 
 	srv.http = &http.Server{

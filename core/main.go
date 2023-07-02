@@ -6,7 +6,7 @@ import (
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/v2"
-	"github.com/luckystrike561/vizimind/core/internal/datastore/postgres"
+	"github.com/luckystrike561/vizimind/core/internal/datastore/mongo"
 	"github.com/luckystrike561/vizimind/core/internal/server"
 	"github.com/luckystrike561/vizimind/core/pkg/regiondo"
 	"github.com/rs/zerolog/log"
@@ -34,18 +34,17 @@ func run() int {
 		return 1
 	}
 
-	// Postgres
-	postgresSvc := postgres.New(&postgres.Config{
-		Host:     k.String("postgres.host"),
-		Port:     k.Int("postgres.port"),
-		User:     k.String("postgres.user"),
-		Password: k.String("postgres.password"),
-		Database: k.String("postgres.database"),
+	// Mongo
+	mongoSvc := mongo.New(&mongo.Config{
+		Host:     k.String("mongo.host"),
+		Port:     k.Int("mongo.port"),
+		User:     k.String("mongo.user"),
+		Password: k.String("mongo.password"),
 	})
-	if err := postgresSvc.Init(); err != nil {
+	if err := mongoSvc.Init(); err != nil {
 		log.Error().
 			Err(err).
-			Msg("Couldn't initialize postgres client")
+			Msg("Couldn't initialize mongo client")
 
 		return 1
 	}
@@ -66,7 +65,7 @@ func run() int {
 		return 1
 	}
 
-	srv := server.New(cfg, postgresSvc, regiondoSvc)
+	srv := server.New(cfg, mongoSvc, regiondoSvc)
 	if err := srv.Init(); err != nil {
 		log.Error().
 			Err(err).

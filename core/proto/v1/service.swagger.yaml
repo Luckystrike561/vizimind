@@ -9,40 +9,15 @@ consumes:
 produces:
   - application/json
 paths:
-  /activity/{order_id}:
+  /activities:
     get:
       summary: Get activity
-      description: Returns the activity
-      operationId: CoreService_GetActivity
+      operationId: CoreService_ListActivity
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetActivityResponse'
-        default:
-          description: An unexpected error response.
-          schema:
-            $ref: '#/definitions/rpcStatus'
-      parameters:
-        - name: order_id
-          in: path
-          required: true
-          type: string
-        - name: language
-          in: query
-          required: false
-          type: string
-      tags:
-        - activity
-  /gpx:
-    get:
-      summary: Get activity
-      operationId: CoreService_ListGPX
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/v1ListGPXResponse'
+            $ref: '#/definitions/v1ListActivityResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -60,14 +35,15 @@ paths:
           format: int32
       tags:
         - activity
+  /activity:
     post:
-      summary: Create gpx
-      operationId: CoreService_CreateGPX
+      summary: Create activity
+      operationId: CoreService_CreateActivity
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GPX'
+            $ref: '#/definitions/v1Activity'
         default:
           description: An unexpected error response.
           schema:
@@ -77,19 +53,19 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/v1CreateGPXRequest'
+            $ref: '#/definitions/v1CreateActivityRequest'
       tags:
-        - gpx
-  /gpx/{sku}:
+        - activity
+  /activity/{sku}:
     get:
-      summary: Get gpx
-      description: Returns the gpx
-      operationId: CoreService_GetGPX
+      summary: Get activity
+      description: Returns the activity
+      operationId: CoreService_GetActivity
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GPX'
+            $ref: '#/definitions/v1Activity'
         default:
           description: An unexpected error response.
           schema:
@@ -100,10 +76,10 @@ paths:
           required: true
           type: string
       tags:
-        - gpx
+        - activity
     delete:
-      summary: Delete gpx
-      operationId: CoreService_DeleteGPX
+      summary: Delete activity
+      operationId: CoreService_DeleteActivity
       responses:
         "200":
           description: A successful response.
@@ -120,30 +96,32 @@ paths:
           required: true
           type: string
       tags:
-        - gpx
-    put:
-      summary: Update gpx
-      operationId: CoreService_UpdateGPX
+        - activity
+  /activity/order/{order_id}:
+    get:
+      summary: Get activity
+      description: Returns the activity
+      operationId: CoreService_GetActivityByOrderID
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GPX'
+            $ref: '#/definitions/v1GetActivityByOrderIDResponse'
         default:
           description: An unexpected error response.
           schema:
             $ref: '#/definitions/rpcStatus'
       parameters:
-        - name: sku
+        - name: order_id
           in: path
           required: true
           type: string
-        - name: gpx
+        - name: language
           in: query
           required: false
           type: string
       tags:
-        - gpx
+        - activity
   /gpx/{sku}/download:
     get:
       summary: Get gpx
@@ -185,26 +163,70 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
-  v1CreateGPXRequest:
+  v1Activity:
     type: object
     properties:
       sku:
         type: string
       gpx:
         type: string
+      product_id:
+        type: string
+      names:
+        type: object
+        additionalProperties:
+          type: string
+      descriptions:
+        type: object
+        additionalProperties:
+          type: string
+      image:
+        type: string
+      transports:
+        type: object
+        additionalProperties:
+          type: string
+      supplier:
+        $ref: '#/definitions/v1Supplier'
+      extra_meeting_info:
+        type: object
+        additionalProperties:
+          type: string
+  v1CreateActivityRequest:
+    type: object
+    properties:
+      sku:
+        type: string
+      gpx:
+        type: string
+      product_id:
+        type: string
+      names:
+        type: object
+        additionalProperties:
+          type: string
+      descriptions:
+        type: object
+        additionalProperties:
+          type: string
+      image:
+        type: string
+      transports:
+        type: object
+        additionalProperties:
+          type: string
+      supplier:
+        $ref: '#/definitions/v1Supplier'
+      extra_meeting_info:
+        type: object
+        additionalProperties:
+          type: string
   v1DownloadGPXResponse:
     type: object
     properties:
       gpx:
         type: string
-  v1GPX:
-    type: object
-    properties:
-      sku:
-        type: string
-      gpx:
-        type: string
-  v1GetActivityResponse:
+  v1GetActivityByOrderIDResponse:
     type: object
     properties:
       order_id:
@@ -257,14 +279,33 @@ definitions:
         type: array
         items:
           type: string
-  v1ListGPXResponse:
+      details:
+        $ref: '#/definitions/v1Activity'
+  v1ListActivityResponse:
     type: object
     properties:
       items:
         type: array
         items:
           type: object
-          $ref: '#/definitions/v1GPX'
+          $ref: '#/definitions/v1Activity'
       total:
         type: integer
         format: int32
+  v1Supplier:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      zipcode:
+        type: string
+      country:
+        type: string

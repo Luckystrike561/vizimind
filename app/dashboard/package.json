@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
+    "start": "vite --mode dev",
+    "dev": "vite --mode dev",
+    "build-staging": "vite build --mode staging",
+    "build-production": "vite build --mode production",
     "serve": "vite preview"
   },
   "license": "MIT",

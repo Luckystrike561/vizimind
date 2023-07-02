@@ -1,10 +1,22 @@
 version: "3"
 
 tasks:
+  all:
+    desc: Run all tasks
+    cmds:
+      - task tidy
+      - task gen
+      - task build
+      - task test
+      - task lint
   run:
     desc: Run the application
     cmds:
       - go run main.go
+  build:
+    desc: Build the application
+    cmds:
+      - go build -o ./bin/vizimind ./main.go
   gen:
     desc: Generate code
     cmds:
@@ -16,9 +28,13 @@ tasks:
   test:
     desc: Run tests
     cmds:
-      - go test ./... -v -count=1 -cover -race
+      - go test ./... -v -cover -race
   lint:
     desc: Run linters
     cmds:
       - golint ./...
       - golangci-lint run --out-format checkstyle
+  docker:
+    desc: Build docker image with buildx and push to ghcr.io
+    cmds:
+      - docker buildx build --push -f ./Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7 -t ghcr.io/luckystrike561/vizimind/core:{{.TAG}} ../
